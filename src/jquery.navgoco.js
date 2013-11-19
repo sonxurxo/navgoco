@@ -45,14 +45,21 @@
 			self.$el.find('ul').each(function(idx) {
 				var sub = $(this);
 				sub.attr('data-index', idx);
-				if (self.options.save && self.state.hasOwnProperty(idx)) {
+				if (!self.options.collapsed) {
 					sub.parent().addClass(self.options.openClass);
+				}
+				if (self.options.save && self.state.hasOwnProperty(idx)) {
+					if (self.options.collapsed) {
+						sub.parent().addClass(self.options.openClass);
+					}
 					sub.show();
 				} else if (sub.parent().hasClass(self.options.openClass)) {
 					sub.show();
 					self.state[idx] = 1;
 				} else {
-					sub.hide();
+					if (self.options.collapsed) {
+						sub.hide();
+					}
 				}
 			});
 
@@ -283,6 +290,7 @@
 		caret: '<span class="caret"></span>',
 		accordion: false,
 		openClass: 'open',
+		collapsed: true,
 		save: true,
 		cookie: {
 			name: 'navgoco',
